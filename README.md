@@ -1,1 +1,0 @@
-# qa_guru_homework8
