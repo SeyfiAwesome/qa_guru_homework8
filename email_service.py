@@ -1,12 +1,11 @@
-from datetime import datetime
 import copy
+from datetime import datetime
 
 from email import Email
-from status_enums import Status
+from status_enum import Status
 
 
 class EmailService:
-
     def send_email(self, email: Email):
         sent_emails = []
 
@@ -21,17 +20,18 @@ class EmailService:
                 email_copy.status = Status.FAILED
 
             sent_emails.append(email_copy)
+
         return sent_emails
 
-class LoggingEmailService(EmailService):
 
+class LoggingEmailService(EmailService):
     def send_email(self, email: Email):
         sent_emails = super().send_email(email)
 
         with open("send.log", "a", encoding="utf-8") as f:
             for sent in sent_emails:
                 f.write(
-                    f"{datetime.now()} | "
+                    f"{sent.date} | "
                     f"From: {sent.sender.masked} | "
                     f"To: {', '.join(r.masked for r in sent.recipients)} | "
                     f"Subject: {sent.subject} | "
